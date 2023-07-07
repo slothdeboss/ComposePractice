@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Compose practice</string>
+    <string name="welcome">Welcome!</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="not_a_member">Not a member?</string>
+    <string name="register_now">Register now</string>
+    <string name="continue_with">Or continue with</string>
+</resources>
