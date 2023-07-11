@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.slothdeboss.composepractice.ui.theme.LocalTypography
 
 @Composable
 fun BoldTitle(
@@ -21,6 +22,6 @@ fun BoldTitle(modifier: Modifier = Modifier, text: String) {
     Text(
         modifier = modifier,
         text = text,
-        style = MaterialTheme.typography.headlineLarge
+        style = LocalTypography.current.h1
     )
 }

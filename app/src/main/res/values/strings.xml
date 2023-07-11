@@ -8,4 +8,16 @@
     <string name="not_a_member">Not a member?</string>
     <string name="register_now">Register now</string>
     <string name="continue_with">Or continue with</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_account_to_start">Create an account to get started</string>
+    <string name="name">Name</string>
+    <string name="full_name">Full name</string>
+    <string name="email_template">name@email.com</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="terms_and_conditions_checkbox_message">I\'ve read and agree with the Terms and Conditions and the Privacy Policy.</string>
+    <string name="i_have_read_and_agree_with">I\'ve read and agree with the </string>
+    <string name="and_the">and the</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

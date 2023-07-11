@@ -22,7 +22,7 @@ fun RoundedButton(
     @DrawableRes
     icon: Int,
     color: Color,
-    tintColor: Color,
+    tintColor: Color = Color.White,
     onClick: () -> Unit = {}
 ) {
     RoundedButton(
@@ -42,7 +42,7 @@ fun RoundedButton(
     @DrawableRes
     icon: Int,
     color: Color,
-    tintColor: Color,
+    tintColor: Color = Color.White,
     onClick: () -> Unit = {}
 ) {
     Box(
