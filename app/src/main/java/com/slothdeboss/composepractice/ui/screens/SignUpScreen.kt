@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -36,7 +37,9 @@ import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.HorizontalPadding12
 import com.slothdeboss.composepractice.ui.util.VerticalPadding16
 import com.slothdeboss.composepractice.ui.util.VerticalPadding24
+import com.slothdeboss.composepractice.ui.util.VerticalPadding6
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
+import com.slothdeboss.composepractice.ui.views.AlreadyHaveAccountSpannable
 import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
 import com.slothdeboss.composepractice.ui.views.PasswordOutlinedText
 import com.slothdeboss.composepractice.ui.views.RoundedCornerCheckBox
@@ -44,7 +47,10 @@ import com.slothdeboss.composepractice.ui.views.TermsAndConditionsSpannable
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier) {
+fun SignUpScreen(
+    modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit = {}
+) {
 
     val colors = ComposePracticeTheme.colors
 
@@ -167,6 +173,13 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 )
+            )
+
+            Spacer(modifier = VerticalPadding6)
+
+            AlreadyHaveAccountSpannable(
+                modifier = Modifier.align(Alignment.End),
+                onLoginClick = onLoginClick
             )
 
             Spacer(modifier = VerticalPadding24)

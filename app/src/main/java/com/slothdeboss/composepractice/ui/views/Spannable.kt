@@ -14,7 +14,10 @@ import com.slothdeboss.composepractice.ui.theme.HighlightDarkest
 import com.slothdeboss.composepractice.ui.theme.LocalColors
 
 @Composable
-fun RegisterNowSpannable(modifier: Modifier = Modifier) {
+fun RegisterNowSpannable(
+    modifier: Modifier = Modifier,
+    onRegisterClick: () -> Unit = {}
+) {
     val registerNowTag = "__register_now"
     val registerNow = stringResource(id = R.string.register_now)
     val annotatedString = buildAnnotatedString {
@@ -33,7 +36,7 @@ fun RegisterNowSpannable(modifier: Modifier = Modifier) {
         onClick = { offset ->
             annotatedString
                 .getStringAnnotations(tag = registerNowTag, start = offset, end = offset)
-                .firstOrNull()?.let { Log.e("TAG", it.item) }
+                .firstOrNull()?.let { onRegisterClick() }
         }
     )
 }
@@ -74,6 +77,37 @@ fun TermsAndConditionsSpannable(modifier: Modifier = Modifier) {
             annotatedString
                 .getStringAnnotations(tag = privacyPolicyTag, start = offset, end = offset)
                 .firstOrNull()?.let { Log.e("TAG", it.item) }
+        }
+    )
+}
+
+@Composable
+fun AlreadyHaveAccountSpannable(
+    modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit = {}
+) {
+    val colors = LocalColors.current
+    val loginTag = "__login"
+
+    val login = stringResource(id = R.string.login)
+
+    val annotatedString = buildAnnotatedString {
+        append(stringResource(id = R.string.already_have_an_account))
+        append(" ")
+        withStyle(style = SpanStyle(color = colors.highlight.darkest)) {
+            pushStringAnnotation(tag = loginTag, annotation = login)
+            append(login)
+        }
+    }
+
+    ClickableText(
+        modifier = modifier,
+        text = annotatedString,
+        style = ComposePracticeTheme.typography.actionL,
+        onClick = { offset ->
+            annotatedString
+                .getStringAnnotations(tag = loginTag, start = offset, end = offset)
+                .firstOrNull()?.let { onLoginClick() }
         }
     )
 }

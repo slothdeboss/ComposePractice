@@ -55,7 +55,10 @@ import com.slothdeboss.composepractice.ui.views.RoundedButton
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    navigateToRegister: () -> Unit
+) {
     val colors = LocalColors.current
 
     val (emailFocus, passwordFocus) = remember { FocusRequester.createRefs() }
@@ -132,7 +135,8 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                 }
                 Spacer(modifier = VerticalPadding4)
                 RegisterNowSpannable(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onRegisterClick = navigateToRegister
                 )
                 Divider(
                     modifier = VerticalPadding24,
@@ -175,6 +179,6 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 @Composable
 fun LoginScreenPreview() {
     ComposePracticeTheme {
-        LoginScreen()
+        LoginScreen(navigateToRegister = {})
     }
 }
