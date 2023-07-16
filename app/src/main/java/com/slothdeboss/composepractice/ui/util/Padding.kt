@@ -10,6 +10,7 @@ val VerticalPadding8 = Modifier.padding(vertical = 8.dp)
 val VerticalPadding12 = Modifier.padding(vertical = 12.dp)
 val VerticalPadding16 = Modifier.padding(vertical = 16.dp)
 val VerticalPadding24 = Modifier.padding(vertical = 24.dp)
+val VerticalPadding40 = Modifier.padding(vertical = 40.dp)
 
 val HorizontalPadding8 = Modifier.padding(horizontal = 8.dp)
 val HorizontalPadding12 = Modifier.padding(horizontal = 12.dp)

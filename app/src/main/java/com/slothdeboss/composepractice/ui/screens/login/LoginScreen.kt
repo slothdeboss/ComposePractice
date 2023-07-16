@@ -1,7 +1,8 @@
-package com.slothdeboss.composepractice.ui.screens
+package com.slothdeboss.composepractice.ui.screens.login
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,11 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -37,11 +34,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slothdeboss.composepractice.R
 import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
 import com.slothdeboss.composepractice.ui.theme.HighlightDarkest
-import com.slothdeboss.composepractice.ui.theme.HighlightLight
 import com.slothdeboss.composepractice.ui.theme.LocalColors
+import com.slothdeboss.composepractice.ui.theme.LocalTypography
 import com.slothdeboss.composepractice.ui.theme.RoundedCornerShape12
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.VerticalPadding24
@@ -52,17 +51,20 @@ import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
 import com.slothdeboss.composepractice.ui.views.PasswordOutlinedText
 import com.slothdeboss.composepractice.ui.views.RegisterNowSpannable
 import com.slothdeboss.composepractice.ui.views.RoundedButton
+import com.slothdeboss.composepractice.ui.views.RoundedCornerButton
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    navigateToRegister: () -> Unit
+    onSignUpClick: () -> Unit,
+    onForgotPasswordClick: (email: String) -> Unit
 ) {
     val colors = LocalColors.current
-
-    val (emailFocus, passwordFocus) = remember { FocusRequester.createRefs() }
+    val typography = LocalTypography.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val viewModel = viewModel { LoginViewModel() }
 
     Surface(
         modifier = modifier
@@ -80,33 +82,26 @@ fun LoginScreen(
                     .padding(start = 24.dp, end = 24.dp, top = 40.dp)
             ) {
                 BoldTitle(resId = R.string.welcome)
+
                 Spacer(modifier = Modifier.height(12.dp))
+
                 OutlinedTextWithPlaceholder(
-                    modifier = Modifier
-                        .focusRequester(emailFocus)
-                        .fillMaxWidth(),
-                    onValueChanged = { email ->
-                        Log.e("TAG", "Email $email")
-                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.email,
+                    onValueChanged = viewModel::updateEmail,
                     placeholder = R.string.email_address,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            passwordFocus.requestFocus()
-                        }
                     )
                 )
+
                 Spacer(modifier = VerticalPadding8)
+
                 PasswordOutlinedText(
-                    modifier = Modifier
-                        .focusRequester(passwordFocus)
-                        .fillMaxWidth(),
-                    onValueChanged = { password ->
-                        Log.e("TAG", "Password $password")
-                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.password,
+                    onValueChanged = viewModel::updatePassword,
                     placeholder = R.string.password,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
@@ -118,38 +113,51 @@ fun LoginScreen(
                         }
                     )
                 )
+
                 Spacer(modifier = VerticalPadding8)
+
                 Text(
+                    modifier = Modifier.clickable {
+                        onForgotPasswordClick(viewModel.email)
+                    },
                     text = stringResource(id = R.string.forgot_password),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = HighlightDarkest
+                    style = typography.actionM,
+                    color = colors.highlight.darkest
                 )
+
                 Spacer(modifier = VerticalPadding8)
-                Button(
+
+                RoundedCornerButton(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape12,
+                    text = R.string.login,
                     colors = highlightButtonColors(),
-                    onClick = {}
-                ) {
-                    Text(text = stringResource(id = R.string.login))
-                }
+                    cornerRadius = 12.dp,
+                    textColor = colors.neutralLight.lightest,
+                    onClick = viewModel::onLoginClick
+                )
+
                 Spacer(modifier = VerticalPadding4)
+
                 RegisterNowSpannable(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    onRegisterClick = navigateToRegister
+                    onRegisterClick = onSignUpClick
                 )
+
                 Divider(
                     modifier = VerticalPadding24,
                     thickness = 1.dp,
-                    color = Color.Gray
+                    color = colors.neutralLight.dark
                 )
+
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = stringResource(id = R.string.continue_with),
                     style = MaterialTheme.typography.labelMedium,
-                    color = Color.Gray
+                    color = colors.neutralDark.light
                 )
+
                 Spacer(modifier = VerticalPadding8)
+
                 Row(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -157,18 +165,26 @@ fun LoginScreen(
                     RoundedButton(
                         size = 40,
                         icon = R.drawable.ic_google,
-                        color = Color.Red,
-                    )
+                        color = colors.error.dark,
+                    ) {
+
+                    }
+
                     RoundedButton(
                         size = 40.dp,
                         icon = R.drawable.ic_apple,
-                        color = Color.Black,
-                    )
+                        color = colors.neutralDark.darkest,
+                    ) {
+
+                    }
+
                     RoundedButton(
                         size = 40.dp,
                         icon = R.drawable.ic_facebook,
-                        color = Color.Blue,
-                    )
+                        color = colors.highlight.darkest,
+                    ) {
+
+                    }
                 }
             }
         }
@@ -179,6 +195,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     ComposePracticeTheme {
-        LoginScreen(navigateToRegister = {})
+        LoginScreen(onSignUpClick = {}, onForgotPasswordClick = {})
     }
 }

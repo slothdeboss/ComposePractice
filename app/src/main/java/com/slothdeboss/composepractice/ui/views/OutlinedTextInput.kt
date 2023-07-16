@@ -37,6 +37,7 @@ import com.slothdeboss.composepractice.ui.theme.RoundedCornerShape12
 @Composable
 fun OutlinedTextWithPlaceholder(
     modifier: Modifier = Modifier,
+    value: String,
     onValueChanged: (String) -> Unit,
     @StringRes placeholder: Int,
     shape: Shape = RoundedCornerShape12,
@@ -46,10 +47,12 @@ fun OutlinedTextWithPlaceholder(
     onIconClick: () -> Unit = {},
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    singleLine: Boolean = false
 ) {
 
     OutlinedTextWithPlaceholder(
         modifier = modifier,
+        value = value,
         onValueChanged = onValueChanged,
         placeholder = stringResource(id = placeholder),
         shape = shape,
@@ -57,7 +60,8 @@ fun OutlinedTextWithPlaceholder(
         icon = icon,
         onIconClick = onIconClick,
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        singleLine = singleLine
     )
 }
 
@@ -65,6 +69,7 @@ fun OutlinedTextWithPlaceholder(
 @Composable
 fun OutlinedTextWithPlaceholder(
     modifier: Modifier = Modifier,
+    value: String,
     onValueChanged: (String) -> Unit,
     placeholder: String,
     shape: Shape = RoundedCornerShape12,
@@ -73,15 +78,14 @@ fun OutlinedTextWithPlaceholder(
     icon: Int? = null,
     onIconClick: () -> Unit = {},
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    singleLine: Boolean = false
 ) {
-    var value by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
         modifier = modifier,
         value = value,
         onValueChange = { newValue ->
-            value = newValue
             onValueChanged(newValue)
         },
         placeholder = { Text(text = placeholder) },
@@ -96,13 +100,15 @@ fun OutlinedTextWithPlaceholder(
         },
         visualTransformation = visualTransformation,
         keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        singleLine = singleLine
     )
 }
 
 @Composable
 fun PasswordOutlinedText(
     modifier: Modifier = Modifier,
+    value: String,
     onValueChanged: (String) -> Unit,
     @StringRes
     placeholder: Int,
@@ -112,6 +118,7 @@ fun PasswordOutlinedText(
 ) {
     PasswordOutlinedText(
         modifier = modifier,
+        value = value,
         onValueChange = onValueChanged,
         placeholder = stringResource(id = placeholder),
         shape = shape,
@@ -123,6 +130,7 @@ fun PasswordOutlinedText(
 @Composable
 fun PasswordOutlinedText(
     modifier: Modifier = Modifier,
+    value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
     shape: Shape = RoundedCornerShape12,
@@ -135,6 +143,7 @@ fun PasswordOutlinedText(
 
     OutlinedTextWithPlaceholder(
         modifier = modifier,
+        value = value,
         onValueChanged = onValueChange,
         placeholder = placeholder,
         shape = shape,
@@ -142,6 +151,7 @@ fun PasswordOutlinedText(
         visualTransformation = transformation,
         onIconClick = { shouldShowPassword = !shouldShowPassword },
         keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        singleLine = true
     )
 }

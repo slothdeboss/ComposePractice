@@ -21,4 +21,11 @@
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="enter_confirm_code">Enter confirm code</string>
+    <string name="code_was_sent_to">A 4-digit code was sent to %s</string>
+    <string name="resend_code">Resend code</string>
+    <string name="continue_label">Continue</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_email_to_send_code_message">Please enter the email to which the verification code will be sent</string>
+    <string name="back">Back</string>
 </resources>

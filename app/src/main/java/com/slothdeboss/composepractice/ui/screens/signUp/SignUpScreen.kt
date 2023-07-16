@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.screens
+package com.slothdeboss.composepractice.ui.screens.signUp
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -30,8 +30,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slothdeboss.composepractice.R
 import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
+import com.slothdeboss.composepractice.ui.theme.LocalColors
+import com.slothdeboss.composepractice.ui.theme.LocalTypography
 import com.slothdeboss.composepractice.ui.theme.RoundedCornerShape12
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.HorizontalPadding12
@@ -42,6 +45,7 @@ import com.slothdeboss.composepractice.ui.util.VerticalPadding8
 import com.slothdeboss.composepractice.ui.views.AlreadyHaveAccountSpannable
 import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
 import com.slothdeboss.composepractice.ui.views.PasswordOutlinedText
+import com.slothdeboss.composepractice.ui.views.RoundedCornerButton
 import com.slothdeboss.composepractice.ui.views.RoundedCornerCheckBox
 import com.slothdeboss.composepractice.ui.views.TermsAndConditionsSpannable
 
@@ -52,18 +56,17 @@ fun SignUpScreen(
     onLoginClick: () -> Unit = {}
 ) {
 
-    val colors = ComposePracticeTheme.colors
-
-    val (emailFocus, passwordFocus, confirmPasswordFocus) = remember {
-        FocusRequester.createRefs()
-    }
+    val colors = LocalColors.current
+    val typography = LocalTypography.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val viewModel = viewModel { SignUpViewModel() }
 
     Surface(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(color = colors.neutralLight.lightest)
+            .verticalScroll(rememberScrollState()),
+        color = colors.neutralLight.lightest
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +76,7 @@ fun SignUpScreen(
         ) {
             Text(
                 text = stringResource(id = R.string.sign_up),
-                style = ComposePracticeTheme.typography.h3,
+                style = typography.h3,
                 color = colors.neutralDark.darkest
             )
 
@@ -81,7 +84,7 @@ fun SignUpScreen(
 
             Text(
                 text = stringResource(id = R.string.create_account_to_start),
-                style = ComposePracticeTheme.typography.bodyS,
+                style = typography.bodyS,
                 color = colors.neutralDark.light
             )
 
@@ -89,7 +92,7 @@ fun SignUpScreen(
 
             Text(
                 text = stringResource(id = R.string.name),
-                style = ComposePracticeTheme.typography.h5,
+                style = typography.h5,
                 color = colors.neutralDark.dark
             )
 
@@ -97,11 +100,9 @@ fun SignUpScreen(
 
             OutlinedTextWithPlaceholder(
                 modifier = Modifier.fillMaxWidth(),
-                onValueChanged = {},
+                value = viewModel.name,
+                onValueChanged = viewModel::updateName,
                 placeholder = R.string.full_name,
-                keyboardActions = KeyboardActions(
-                    onNext = { emailFocus.requestFocus() }
-                ),
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
@@ -112,21 +113,17 @@ fun SignUpScreen(
 
             Text(
                 text = stringResource(id = R.string.email_address),
-                style = ComposePracticeTheme.typography.h5,
+                style = typography.h5,
                 color = colors.neutralDark.dark
             )
 
             Spacer(modifier = VerticalPadding8)
 
             OutlinedTextWithPlaceholder(
-                modifier = Modifier
-                    .focusRequester(emailFocus)
-                    .fillMaxWidth(),
-                onValueChanged = {},
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.email,
+                onValueChanged = viewModel::updateEmail,
                 placeholder = R.string.email_template,
-                keyboardActions = KeyboardActions(
-                    onNext = { passwordFocus.requestFocus() }
-                ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
@@ -137,21 +134,17 @@ fun SignUpScreen(
 
             Text(
                 text = stringResource(id = R.string.password),
-                style = ComposePracticeTheme.typography.h5,
+                style = typography.h5,
                 color = colors.neutralDark.dark
             )
 
             Spacer(modifier = VerticalPadding8)
 
             PasswordOutlinedText(
-                modifier = Modifier
-                    .focusRequester(passwordFocus)
-                    .fillMaxWidth(),
-                onValueChanged = {},
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.password,
+                onValueChanged = viewModel::updatePassword,
                 placeholder = R.string.create_a_password,
-                keyboardActions = KeyboardActions(
-                    onNext = { confirmPasswordFocus.requestFocus() }
-                ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next
@@ -161,10 +154,9 @@ fun SignUpScreen(
             Spacer(modifier = VerticalPadding8)
 
             PasswordOutlinedText(
-                modifier = Modifier
-                    .focusRequester(confirmPasswordFocus)
-                    .fillMaxWidth(),
-                onValueChanged = {},
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.confirmPassword,
+                onValueChanged = viewModel::updateConfirmPassword,
                 placeholder = R.string.confirm_password,
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
@@ -188,9 +180,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 RoundedCornerCheckBox(
-                    onCheckChanged = { checked ->
-                        Log.e("TAG", "isChecked $checked")
-                    },
+                    onCheckChanged = viewModel::updateTermsAndPolicyState,
                     borderColor = colors.neutralLight.darkest,
                     tintColor = colors.highlight.darkest
                 )
@@ -204,14 +194,14 @@ fun SignUpScreen(
 
             Spacer(modifier = VerticalPadding16)
 
-            Button(
+            RoundedCornerButton(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape12,
+                text = R.string.sign_up,
+                cornerRadius = 12.dp,
                 colors = highlightButtonColors(),
-                onClick = { Log.e("TAG", "on button click") }
-            ) {
-                Text(text = stringResource(id = R.string.sign_up))
-            }
+                textColor = colors.neutralLight.lightest,
+                onClick = viewModel::onSignUpClicked
+            )
         }
     }
 }
