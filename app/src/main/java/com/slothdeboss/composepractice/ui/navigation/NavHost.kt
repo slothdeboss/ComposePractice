@@ -10,17 +10,31 @@ import androidx.navigation.navArgument
 import com.slothdeboss.composepractice.ui.navigation.direction.ConfirmCodeDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.GetUserEmailDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.LoginDirection
+import com.slothdeboss.composepractice.ui.navigation.direction.OnboardingDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.SignUpDirection
 import com.slothdeboss.composepractice.ui.navigation.route.ConfirmCodeRoute
 import com.slothdeboss.composepractice.ui.navigation.route.GetUserEmailRoute
 import com.slothdeboss.composepractice.ui.navigation.route.LoginRoute
+import com.slothdeboss.composepractice.ui.navigation.route.OnboardingRoute
 import com.slothdeboss.composepractice.ui.navigation.route.SignUpRoute
 
 @Composable
 fun ComposePracticeNavHost(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = LoginDirection.route) {
+    NavHost(navController = navController, startDestination = OnboardingDirection.route) {
+        composable(OnboardingDirection.route) {
+            OnboardingRoute(
+                navigateNext = {
+                    navController.navigate(LoginDirection.route) {
+                        popUpTo(OnboardingDirection.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
         composable(LoginDirection.route) {
             LoginRoute(
                 navigateToSignUp = {
