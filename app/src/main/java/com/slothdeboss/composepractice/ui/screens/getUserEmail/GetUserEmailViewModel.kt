@@ -13,4 +13,6 @@ class GetUserEmailViewModel : ViewModel() {
     fun updateEmail(value: String) {
         email = value
     }
+
+    fun isValid() = email.isNotBlank()
 }

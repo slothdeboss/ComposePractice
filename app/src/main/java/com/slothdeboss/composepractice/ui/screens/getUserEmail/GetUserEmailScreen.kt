@@ -1,6 +1,5 @@
 package com.slothdeboss.composepractice.ui.screens.getUserEmail
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +10,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -29,42 +32,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slothdeboss.composepractice.R
+import com.slothdeboss.composepractice.ui.components.BoldTitle
+import com.slothdeboss.composepractice.ui.components.OutlinedTextWithPlaceholder
+import com.slothdeboss.composepractice.ui.components.RoundedCornerButton
 import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
-import com.slothdeboss.composepractice.ui.theme.LocalColors
-import com.slothdeboss.composepractice.ui.theme.LocalTypography
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.VerticalPadding16
-import com.slothdeboss.composepractice.ui.util.VerticalPadding24
 import com.slothdeboss.composepractice.ui.util.VerticalPadding4
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
-import com.slothdeboss.composepractice.ui.views.BoldTitle
-import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
-import com.slothdeboss.composepractice.ui.views.RoundedCornerButton
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GetUserEmailScreen(
-    modifier: Modifier = Modifier,
-    navigateWithEmail: (email: String) -> Unit = {},
+    viewModel: GetUserEmailViewModel,
+    onContinuePressed: () -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {
 
-    val colors = LocalColors.current
-    val typography = LocalTypography.current
+    val colors = ComposePracticeTheme.colors
+    val typography = ComposePracticeTheme.typography
 
     val emailFocus = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
-    val viewModel = viewModel { GetUserEmailViewModel() }
+    val snackBarState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        color = colors.neutralLight.lightest
-    ) {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarState)
+        },
+        containerColor = colors.neutralLight.lightest
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -77,7 +83,8 @@ fun GetUserEmailScreen(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 text = stringResource(id = R.string.enter_your_email_to_send_code_message),
                 style = typography.bodyM,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = colors.neutralDark.light
             )
 
             Spacer(modifier = VerticalPadding8)
@@ -96,17 +103,21 @@ fun GetUserEmailScreen(
                 )
             )
 
-            Spacer(modifier = VerticalPadding24)
+            Spacer(modifier = VerticalPadding16)
 
             RoundedCornerButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = R.string.continue_label,
                 cornerRadius = 12.dp,
                 colors = highlightButtonColors(),
-                onClick =  {
+                onClick = {
                     focusManager.clearFocus()
-                    if (viewModel.email.isNotBlank()) {
-                        navigateWithEmail(viewModel.email)
+                    if (viewModel.isValid()) {
+                        onContinuePressed()
+                    } else {
+                        scope.launch {
+                            snackBarState.showSnackbar("Email is not valid")
+                        }
                     }
                 }
             )
@@ -136,6 +147,6 @@ fun GetUserEmailScreen(
 @Composable
 fun GetUserEmailScreenPreview() {
     ComposePracticeTheme {
-        GetUserEmailScreen()
+        GetUserEmailScreen(viewModel = viewModel())
     }
 }

@@ -27,6 +27,10 @@ class ConfirmCodeViewModel : ViewModel() {
         confirmCode = confirmCode.copy(fourthNumber = number)
     }
 
+    fun resendCode() {
+        confirmCode = ConfirmCode()
+    }
+
     fun validateCode() {
         Log.e("TAG", "Code validation ${confirmCode.isValid()}")
     }

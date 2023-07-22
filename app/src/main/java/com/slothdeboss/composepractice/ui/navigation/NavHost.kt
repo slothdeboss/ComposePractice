@@ -5,37 +5,39 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.slothdeboss.composepractice.ui.navigation.route.ConfirmCodeDirection
-import com.slothdeboss.composepractice.ui.navigation.route.GetUserEmailDirection
-import com.slothdeboss.composepractice.ui.navigation.route.LoginDirection
-import com.slothdeboss.composepractice.ui.navigation.route.SignUpDirection
-import com.slothdeboss.composepractice.ui.screens.confirmCode.ConfirmCodeScreen
-import com.slothdeboss.composepractice.ui.screens.getUserEmail.GetUserEmailScreen
-import com.slothdeboss.composepractice.ui.screens.login.LoginScreen
-import com.slothdeboss.composepractice.ui.screens.signUp.SignUpScreen
+import com.slothdeboss.composepractice.ui.navigation.direction.ConfirmCodeDirection
+import com.slothdeboss.composepractice.ui.navigation.direction.GetUserEmailDirection
+import com.slothdeboss.composepractice.ui.navigation.direction.LoginDirection
+import com.slothdeboss.composepractice.ui.navigation.direction.SignUpDirection
+import com.slothdeboss.composepractice.ui.navigation.route.ConfirmCodeRoute
+import com.slothdeboss.composepractice.ui.navigation.route.GetUserEmailRoute
+import com.slothdeboss.composepractice.ui.navigation.route.LoginRoute
+import com.slothdeboss.composepractice.ui.navigation.route.SignUpRoute
 
 @Composable
-fun ComposePracticeNavHost(navController: NavHostController) {
+fun ComposePracticeNavHost(
+    navController: NavHostController = rememberNavController()
+) {
     NavHost(navController = navController, startDestination = LoginDirection.route) {
         composable(LoginDirection.route) {
-            LoginScreen(
-                onSignUpClick = {
+            LoginRoute(
+                navigateToSignUp = {
                     navController.navigate(SignUpDirection.route)
-                }, onForgotPasswordClick = { email ->
-                    val route = if (email.isBlank()) {
-                        GetUserEmailDirection.route
-                    } else {
-                        ConfirmCodeDirection.provideRouteWithArgs(email)
-                    }
-                   navController.navigate(route)
+                },
+                navigateToConfirmCode = { email ->
+                    navController.navigate(ConfirmCodeDirection.provideRouteWithArgs(email))
+                },
+                navigateToGetUserEmail = {
+                    navController.navigate(GetUserEmailDirection.route)
                 }
             )
         }
 
         composable(SignUpDirection.route) {
-            SignUpScreen(
-                onLoginClick = {
+            SignUpRoute(
+                navigateToLogin = {
                     navController.navigate(LoginDirection.route)
                 }
             )
@@ -50,15 +52,12 @@ fun ComposePracticeNavHost(navController: NavHostController) {
                 }
             )
         ) { entry ->
-            val email = entry.arguments?.getString(NavArgument.email).orEmpty()
-            ConfirmCodeScreen(
-                email = email
-            )
+            ConfirmCodeRoute(entry = entry)
         }
 
         composable(GetUserEmailDirection.route) {
-            GetUserEmailScreen(
-                navigateWithEmail = { email ->
+            GetUserEmailRoute(
+                navigateToConfirmCode = { email ->
                     val route = ConfirmCodeDirection.provideRouteWithArgs(email)
                     navController.navigate(route = route) {
                         popUpTo(GetUserEmailDirection.route) {
@@ -66,7 +65,7 @@ fun ComposePracticeNavHost(navController: NavHostController) {
                         }
                     }
                 }, onBackPressed = {
-                   navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }

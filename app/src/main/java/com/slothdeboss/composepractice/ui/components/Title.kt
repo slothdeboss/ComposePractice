@@ -1,11 +1,9 @@
-package com.slothdeboss.composepractice.ui.views
+package com.slothdeboss.composepractice.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.slothdeboss.composepractice.ui.theme.LocalTypography
 

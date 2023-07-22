@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.views
+package com.slothdeboss.composepractice.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background

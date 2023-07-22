@@ -1,89 +1,102 @@
 package com.slothdeboss.composepractice.ui.screens.login
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slothdeboss.composepractice.R
+import com.slothdeboss.composepractice.ui.components.BoldTitle
+import com.slothdeboss.composepractice.ui.components.ContinueWithSocialMedia
+import com.slothdeboss.composepractice.ui.components.Logo
+import com.slothdeboss.composepractice.ui.components.OutlinedTextWithPlaceholder
+import com.slothdeboss.composepractice.ui.components.PasswordOutlinedText
+import com.slothdeboss.composepractice.ui.components.RoundedCornerButton
+import com.slothdeboss.composepractice.ui.components.clickableText.RegisterNowClickableText
 import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
-import com.slothdeboss.composepractice.ui.theme.HighlightDarkest
-import com.slothdeboss.composepractice.ui.theme.LocalColors
-import com.slothdeboss.composepractice.ui.theme.LocalTypography
-import com.slothdeboss.composepractice.ui.theme.RoundedCornerShape12
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
+import com.slothdeboss.composepractice.ui.util.VerticalPadding12
 import com.slothdeboss.composepractice.ui.util.VerticalPadding24
 import com.slothdeboss.composepractice.ui.util.VerticalPadding4
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
-import com.slothdeboss.composepractice.ui.views.BoldTitle
-import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
-import com.slothdeboss.composepractice.ui.views.PasswordOutlinedText
-import com.slothdeboss.composepractice.ui.views.RegisterNowSpannable
-import com.slothdeboss.composepractice.ui.views.RoundedButton
-import com.slothdeboss.composepractice.ui.views.RoundedCornerButton
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel,
     onSignUpClick: () -> Unit,
-    onForgotPasswordClick: (email: String) -> Unit
+    onForgotPasswordClick: () -> Unit,
 ) {
-    val colors = LocalColors.current
-    val typography = LocalTypography.current
+
+    val colors = ComposePracticeTheme.colors
+    val typography = ComposePracticeTheme.typography
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val viewModel = viewModel { LoginViewModel() }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        color = colors.highlight.light
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        containerColor = colors.neutralLight.lightest
     ) {
-        Row(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
-                    .align(Alignment.Bottom)
-                    .background(colors.neutralLight.lightest)
-                    .padding(start = 24.dp, end = 24.dp, top = 40.dp)
+                    .background(colors.highlight.lightest)
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Logo(
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(align = Alignment.Bottom)
+                    .padding(horizontal = 24.dp, vertical = 40.dp)
             ) {
                 BoldTitle(resId = R.string.welcome)
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = VerticalPadding12)
 
                 OutlinedTextWithPlaceholder(
                     modifier = Modifier.fillMaxWidth(),
@@ -117,9 +130,7 @@ fun LoginScreen(
                 Spacer(modifier = VerticalPadding8)
 
                 Text(
-                    modifier = Modifier.clickable {
-                        onForgotPasswordClick(viewModel.email)
-                    },
+                    modifier = Modifier.clickable { onForgotPasswordClick() },
                     text = stringResource(id = R.string.forgot_password),
                     style = typography.actionM,
                     color = colors.highlight.darkest
@@ -138,7 +149,7 @@ fun LoginScreen(
 
                 Spacer(modifier = VerticalPadding4)
 
-                RegisterNowSpannable(
+                RegisterNowClickableText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     onRegisterClick = onSignUpClick
                 )
@@ -149,43 +160,24 @@ fun LoginScreen(
                     color = colors.neutralLight.dark
                 )
 
-                Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = stringResource(id = R.string.continue_with),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = colors.neutralDark.light
+                ContinueWithSocialMedia(
+                    modifier = Modifier.fillMaxWidth(),
+                    onGoogleClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("On google click!")
+                        }
+                    },
+                    onAppleClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("On apple click!")
+                        }
+                    },
+                    onFacebookClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("On facebook click!")
+                        }
+                    }
                 )
-
-                Spacer(modifier = VerticalPadding8)
-
-                Row(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    RoundedButton(
-                        size = 40,
-                        icon = R.drawable.ic_google,
-                        color = colors.error.dark,
-                    ) {
-
-                    }
-
-                    RoundedButton(
-                        size = 40.dp,
-                        icon = R.drawable.ic_apple,
-                        color = colors.neutralDark.darkest,
-                    ) {
-
-                    }
-
-                    RoundedButton(
-                        size = 40.dp,
-                        icon = R.drawable.ic_facebook,
-                        color = colors.highlight.darkest,
-                    ) {
-
-                    }
-                }
             }
         }
     }
@@ -195,6 +187,10 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     ComposePracticeTheme {
-        LoginScreen(onSignUpClick = {}, onForgotPasswordClick = {})
+        LoginScreen(
+            viewModel = viewModel(),
+            onSignUpClick = {},
+            onForgotPasswordClick = {}
+        )
     }
 }

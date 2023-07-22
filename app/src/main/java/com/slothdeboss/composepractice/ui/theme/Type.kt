@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.slothdeboss.composepractice.R
 
@@ -12,31 +11,23 @@ import com.slothdeboss.composepractice.R
 // Set of Material typography styles to start with
 val Typography = ComposeTypography(
     h1 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily(Font(R.font.font_inter_black)),
         fontSize = 24.sp,
-        letterSpacing = 0.24.sp
     ),
     h2 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily(Font(R.font.font_inter_black)),
         fontSize = 18.sp,
-        letterSpacing = 0.09.sp
     ),
     h3 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily(Font(R.font.font_inter_black)),
         fontSize = 16.sp,
-        letterSpacing = 0.08.sp
     ),
     h4 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily(Font(R.font.font_inter_extra_bold)),
         fontSize = 14.sp
     ),
     h5 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = FontFamily(Font(R.font.font_inter_bold)),
         fontSize = 12.sp
     ),
     bodyXL = TextStyle(
@@ -54,33 +45,26 @@ val Typography = ComposeTypography(
     bodyS = TextStyle(
         fontFamily = FontFamily(Font(R.font.font_inter_regular)),
         fontSize = 12.sp,
-        letterSpacing = 0.12.sp
     ),
     bodyXS = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
+        fontFamily = FontFamily(Font(R.font.font_inter_medium)),
         fontSize = 10.sp,
-        letterSpacing = 0.15.sp
     ),
     actionL = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight(600),
+        fontFamily = FontFamily(Font(R.font.font_inter_semi_bold)),
         fontSize = 14.sp
     ),
     actionM = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight(600),
+        fontFamily = FontFamily(Font(R.font.font_inter_semi_bold)),
         fontSize = 12.sp
     ),
     actionS = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight(600),
+        fontFamily = FontFamily(Font(R.font.font_inter_semi_bold)),
         fontSize = 10.sp
     ),
     caption = TextStyle(
-        fontFamily = FontFamily(Font(R.font.font_inter_regular)),
-        fontWeight = FontWeight(600),
-        fontSize = 10.sp,
-        letterSpacing = 0.5.sp
+        fontFamily = FontFamily(Font(R.font.font_inter_semi_bold)),
+        fontSize = 10.sp
     )
 )
 

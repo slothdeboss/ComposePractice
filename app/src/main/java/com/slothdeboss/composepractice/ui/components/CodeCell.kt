@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.views
+package com.slothdeboss.composepractice.ui.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.size
@@ -26,6 +26,7 @@ fun CodeCell(
     value: String,
     onValueChange: (String) -> Unit = {},
     onNextAction: () -> Unit = {},
+    onPrevious: () -> Unit = {},
     size: Dp = 48.dp,
     borderColor: Color = LocalColors.current.neutralDark.lightest,
     cornerSize: Dp = 12.dp,
@@ -46,6 +47,8 @@ fun CodeCell(
                 onValueChange(changedValue)
                 if (changedValue.length == 1) {
                     onNextAction()
+                } else {
+                    onPrevious()
                 }
             }
         },

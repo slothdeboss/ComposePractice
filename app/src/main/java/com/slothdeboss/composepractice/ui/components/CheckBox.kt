@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.views
+package com.slothdeboss.composepractice.ui.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +24,7 @@ import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
 
 @Composable
 fun RoundedCornerCheckBox(
+    modifier: Modifier = Modifier,
     isChecked: Boolean = false,
     onCheckChanged: (Boolean) -> Unit = {},
     size: Dp = 24.dp,
@@ -33,7 +34,7 @@ fun RoundedCornerCheckBox(
 ) {
     var checked by rememberSaveable { mutableStateOf(isChecked) }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(4.dp)
             .size(size)
             .border(

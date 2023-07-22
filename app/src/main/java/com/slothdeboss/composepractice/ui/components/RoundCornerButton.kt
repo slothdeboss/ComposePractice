@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.views
+package com.slothdeboss.composepractice.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.shape.RoundedCornerShape

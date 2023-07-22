@@ -1,7 +1,5 @@
 package com.slothdeboss.composepractice.ui.screens.signUp
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,16 +11,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -32,48 +31,50 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slothdeboss.composepractice.R
+import com.slothdeboss.composepractice.ui.components.OutlinedTextWithPlaceholder
+import com.slothdeboss.composepractice.ui.components.PasswordOutlinedText
+import com.slothdeboss.composepractice.ui.components.RoundedCornerButton
+import com.slothdeboss.composepractice.ui.components.RoundedCornerCheckBox
+import com.slothdeboss.composepractice.ui.components.clickableText.AlreadyHaveAccountClickableText
+import com.slothdeboss.composepractice.ui.components.clickableText.TermsAndConditionsClickableText
 import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
-import com.slothdeboss.composepractice.ui.theme.LocalColors
-import com.slothdeboss.composepractice.ui.theme.LocalTypography
-import com.slothdeboss.composepractice.ui.theme.RoundedCornerShape12
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
-import com.slothdeboss.composepractice.ui.util.HorizontalPadding12
+import com.slothdeboss.composepractice.ui.util.HorizontalPadding8
 import com.slothdeboss.composepractice.ui.util.VerticalPadding16
 import com.slothdeboss.composepractice.ui.util.VerticalPadding24
-import com.slothdeboss.composepractice.ui.util.VerticalPadding6
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
-import com.slothdeboss.composepractice.ui.views.AlreadyHaveAccountSpannable
-import com.slothdeboss.composepractice.ui.views.OutlinedTextWithPlaceholder
-import com.slothdeboss.composepractice.ui.views.PasswordOutlinedText
-import com.slothdeboss.composepractice.ui.views.RoundedCornerButton
-import com.slothdeboss.composepractice.ui.views.RoundedCornerCheckBox
-import com.slothdeboss.composepractice.ui.views.TermsAndConditionsSpannable
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel,
     onLoginClick: () -> Unit = {}
 ) {
 
-    val colors = LocalColors.current
-    val typography = LocalTypography.current
+    val colors = ComposePracticeTheme.colors
+    val typography = ComposePracticeTheme.typography
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val viewModel = viewModel { SignUpViewModel() }
+    val snackBarState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        color = colors.neutralLight.lightest
-    ) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarState)
+        },
+        containerColor = colors.neutralLight.lightest
+    ) { padding ->
         Column(
             modifier = Modifier
+                .padding(padding)
                 .fillMaxSize()
-                .padding(24.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.Center
         ) {
+
             Text(
                 text = stringResource(id = R.string.sign_up),
                 style = typography.h3,
@@ -167,28 +168,31 @@ fun SignUpScreen(
                 )
             )
 
-            Spacer(modifier = VerticalPadding6)
+            Spacer(modifier = VerticalPadding8)
 
-            AlreadyHaveAccountSpannable(
+            AlreadyHaveAccountClickableText(
                 modifier = Modifier.align(Alignment.End),
                 onLoginClick = onLoginClick
             )
 
-            Spacer(modifier = VerticalPadding24)
+            Spacer(modifier = VerticalPadding16)
 
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 RoundedCornerCheckBox(
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     onCheckChanged = viewModel::updateTermsAndPolicyState,
                     borderColor = colors.neutralLight.darkest,
                     tintColor = colors.highlight.darkest
                 )
 
-                Spacer(modifier = HorizontalPadding12)
+                Spacer(modifier = HorizontalPadding8)
 
-                TermsAndConditionsSpannable(
-                    modifier = Modifier.fillMaxWidth()
+                TermsAndConditionsClickableText(
+                    modifier = Modifier.fillMaxWidth(),
+                    onTermsClick = {},
+                    onPrivacyPolicyClick = {}
                 )
             }
 
@@ -210,6 +214,6 @@ fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
     ComposePracticeTheme {
-        SignUpScreen()
+        SignUpScreen(viewModel = viewModel())
     }
 }

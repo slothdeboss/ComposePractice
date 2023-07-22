@@ -1,4 +1,4 @@
-package com.slothdeboss.composepractice.ui.navigation.route
+package com.slothdeboss.composepractice.ui.navigation.direction
 
 object LoginDirection : Direction {
     override val route: String
