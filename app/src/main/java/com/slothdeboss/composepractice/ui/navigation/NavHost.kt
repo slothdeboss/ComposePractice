@@ -34,37 +34,15 @@ fun ComposePracticeNavHost(
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(OnboardingDirection.route) {
-            OnboardingRoute(
-                navigateNext = {
-                    navController.navigate(LoginDirection.route) {
-                        popUpTo(OnboardingDirection.route) {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
+            OnboardingRoute(navController)
         }
 
         composable(LoginDirection.route) {
-            LoginRoute(
-                navigateToSignUp = {
-                    navController.navigate(SignUpDirection.route)
-                },
-                navigateToConfirmCode = { email ->
-                    navController.navigate(ConfirmCodeDirection.provideRouteWithArgs(email))
-                },
-                navigateToGetUserEmail = {
-                    navController.navigate(GetUserEmailDirection.route)
-                }
-            )
+            LoginRoute(navController)
         }
 
         composable(SignUpDirection.route) {
-            SignUpRoute(
-                navigateToLogin = {
-                    navController.navigate(LoginDirection.route)
-                }
-            )
+            SignUpRoute(navController)
         }
 
         composable(
@@ -80,18 +58,7 @@ fun ComposePracticeNavHost(
         }
 
         composable(GetUserEmailDirection.route) {
-            GetUserEmailRoute(
-                navigateToConfirmCode = { email ->
-                    val route = ConfirmCodeDirection.provideRouteWithArgs(email)
-                    navController.navigate(route = route) {
-                        popUpTo(GetUserEmailDirection.route) {
-                            inclusive = true
-                        }
-                    }
-                }, onBackPressed = {
-                    navController.navigateUp()
-                }
-            )
+            GetUserEmailRoute(navController)
         }
     }
 }
