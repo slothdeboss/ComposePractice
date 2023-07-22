@@ -1,9 +1,14 @@
 package com.slothdeboss.composepractice.ui.screens.onboarding
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.slothdeboss.composepractice.ui.preferences.OnboardingPreferences
 import com.slothdeboss.composepractice.ui.screens.onboarding.entity.OnboardingItem
 
-class OnboardingViewModel : ViewModel() {
+class OnboardingViewModel(
+    private val onboardingPreferences: OnboardingPreferences
+) : ViewModel() {
 
     private val items = listOf(
         OnboardingItem(
@@ -22,5 +27,22 @@ class OnboardingViewModel : ViewModel() {
 
     fun getOnboardingItem(page: Int): OnboardingItem {
         return items[page]
+    }
+
+    fun setOnboardingIsShown() {
+        onboardingPreferences.onboardingIsShown()
+    }
+}
+
+class OnboardingViewModelFactory(
+    private val context: Context
+) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(OnboardingViewModel::class.java)) {
+            return OnboardingViewModel(OnboardingPreferences.get(context)) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

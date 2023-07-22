@@ -1,6 +1,7 @@
 package com.slothdeboss.composepractice.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,12 +18,21 @@ import com.slothdeboss.composepractice.ui.navigation.route.GetUserEmailRoute
 import com.slothdeboss.composepractice.ui.navigation.route.LoginRoute
 import com.slothdeboss.composepractice.ui.navigation.route.OnboardingRoute
 import com.slothdeboss.composepractice.ui.navigation.route.SignUpRoute
+import com.slothdeboss.composepractice.ui.preferences.OnboardingPreferences
 
 @Composable
 fun ComposePracticeNavHost(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = OnboardingDirection.route) {
+    val context = LocalContext.current.applicationContext
+    val preferences = OnboardingPreferences.get(context)
+    val startDestination = if (preferences.shouldShowOnboarding()) {
+        OnboardingDirection.route
+    } else {
+        LoginDirection.route
+    }
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(OnboardingDirection.route) {
             OnboardingRoute(
                 navigateNext = {

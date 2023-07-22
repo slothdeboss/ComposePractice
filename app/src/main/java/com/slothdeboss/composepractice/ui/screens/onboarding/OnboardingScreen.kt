@@ -105,6 +105,7 @@ fun OnboardingScreen(
                     if (currentPage < pageCount - 1) {
                         currentPage += 1
                     } else {
+                        viewModel.setOnboardingIsShown()
                         navigateNext()
                     }
                 }
