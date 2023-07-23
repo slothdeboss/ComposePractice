@@ -47,25 +47,29 @@ android {
 }
 
 ext {
-    nav_version = "2.6.0"
     lifecycle_version = "2.6.1"
+    voyagerVersion = "1.0.0-rc05"
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
+    implementation 'androidx.activity:activity-compose:1.7.2'
+
+    // LIFECYCLE
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation 'androidx.activity:activity-compose:1.7.2'
+
+    // COMPOSE
     implementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
-    implementation "androidx.navigation:navigation-compose:$nav_version"
 
-
+    // VOYAGER
+    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
