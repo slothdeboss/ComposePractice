@@ -21,13 +21,15 @@ fun RoundedCornerButton(
     cornerRadius: Dp = 4.dp,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     textColor: Color = Color.Unspecified,
-    onClick: () -> Unit = {}
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
 ) {
     Button(
         modifier = modifier,
         shape = RoundedCornerShape(cornerRadius),
         colors = colors,
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     ) {
         Text(
             text = stringResource(id = text),

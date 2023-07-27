@@ -29,4 +29,6 @@
     <string name="enter_your_email_to_send_code_message">Please enter the email to which the verification code will be sent</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+    <string name="personalise_your_experience">Personalise your experience</string>
+    <string name="choose_your_interests">Choose your interests.</string>
 </resources>

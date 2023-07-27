@@ -8,11 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.slothdeboss.composepractice.ui.navigation.direction.ChooseYourInterestsDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.ConfirmCodeDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.GetUserEmailDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.LoginDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.OnboardingDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.SignUpDirection
+import com.slothdeboss.composepractice.ui.navigation.route.ChooseYourInterestsRoute
 import com.slothdeboss.composepractice.ui.navigation.route.ConfirmCodeRoute
 import com.slothdeboss.composepractice.ui.navigation.route.GetUserEmailRoute
 import com.slothdeboss.composepractice.ui.navigation.route.LoginRoute
@@ -59,6 +61,10 @@ fun ComposePracticeNavHost(
 
         composable(GetUserEmailDirection.route) {
             GetUserEmailRoute(navController)
+        }
+
+        composable(ChooseYourInterestsDirection.route) {
+            ChooseYourInterestsRoute(navController)
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import com.slothdeboss.composepractice.ui.navigation.direction.ChooseYourInterestsDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.LoginDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.OnboardingDirection
 import com.slothdeboss.composepractice.ui.screens.onboarding.OnboardingScreen
@@ -23,7 +24,7 @@ fun OnboardingRoute(navHostController: NavHostController) {
     OnboardingScreen(
         viewModel = viewModel,
         navigateNext = {
-            navHostController.navigate(LoginDirection.route) {
+            navHostController.navigate(ChooseYourInterestsDirection.route) {
                 popUpTo(OnboardingDirection.route) {
                     inclusive = true
                 }
