@@ -29,11 +29,12 @@ import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.VerticalPadding16
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
-    viewModel: OnboardingViewModel,
+    viewModel: OnboardingViewModel = koinViewModel(),
     navigateNext: () -> Unit = {}
 ) {
     val colors = ComposePracticeTheme.colors

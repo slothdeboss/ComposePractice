@@ -1,7 +1,6 @@
 package com.slothdeboss.composepractice.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,13 +20,14 @@ import com.slothdeboss.composepractice.ui.navigation.route.LoginRoute
 import com.slothdeboss.composepractice.ui.navigation.route.OnboardingRoute
 import com.slothdeboss.composepractice.ui.navigation.route.SignUpRoute
 import com.slothdeboss.composepractice.ui.preferences.OnboardingPreferences
+import org.koin.compose.koinInject
 
 @Composable
 fun ComposePracticeNavHost(
     navController: NavHostController = rememberNavController()
 ) {
-    val context = LocalContext.current.applicationContext
-    val preferences = OnboardingPreferences.get(context)
+    val preferences: OnboardingPreferences = koinInject()
+
     val startDestination = if (preferences.shouldShowOnboarding()) {
         OnboardingDirection.route
     } else {

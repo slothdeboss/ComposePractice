@@ -37,12 +37,13 @@ import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.VerticalPadding12
 import com.slothdeboss.composepractice.ui.util.VerticalPadding40
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ConfirmCodeScreen(
-    viewModel: ConfirmCodeViewModel,
-    email: String
+    email: String,
+    viewModel: ConfirmCodeViewModel = koinViewModel()
 ) {
 
     val colors = ComposePracticeTheme.colors

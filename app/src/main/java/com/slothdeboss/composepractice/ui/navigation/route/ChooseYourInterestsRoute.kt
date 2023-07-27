@@ -16,7 +16,6 @@ fun ChooseYourInterestsRoute(
     val viewModel: ChooseYourInterestsViewModel = viewModel()
 
     ChooseYourInterestsScreen(
-        viewModel = viewModel,
         onNext = {
             navController.navigate(LoginDirection.route) {
                 popUpTo(ChooseYourInterestsDirection.route) {

@@ -1,17 +1,17 @@
 package com.slothdeboss.composepractice.ui.navigation.route
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.slothdeboss.composepractice.ui.navigation.direction.ConfirmCodeDirection
 import com.slothdeboss.composepractice.ui.navigation.direction.GetUserEmailDirection
 import com.slothdeboss.composepractice.ui.screens.getUserEmail.GetUserEmailScreen
 import com.slothdeboss.composepractice.ui.screens.getUserEmail.GetUserEmailViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GetUserEmailRoute(navHostController: NavHostController) {
 
-    val viewModel: GetUserEmailViewModel = viewModel()
+    val viewModel: GetUserEmailViewModel = koinViewModel()
 
     GetUserEmailScreen(
         viewModel = viewModel,

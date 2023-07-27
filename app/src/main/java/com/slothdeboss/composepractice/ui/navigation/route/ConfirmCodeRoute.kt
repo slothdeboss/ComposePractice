@@ -13,10 +13,5 @@ fun ConfirmCodeRoute(
 ) {
     val email = entry.arguments?.getString(NavArgument.email).orEmpty()
 
-    val viewModel: ConfirmCodeViewModel = viewModel()
-
-    ConfirmCodeScreen(
-        viewModel = viewModel,
-        email = email
-    )
+    ConfirmCodeScreen(email = email)
 }

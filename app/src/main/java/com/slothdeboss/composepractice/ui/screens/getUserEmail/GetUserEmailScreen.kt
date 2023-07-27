@@ -41,11 +41,12 @@ import com.slothdeboss.composepractice.ui.util.VerticalPadding16
 import com.slothdeboss.composepractice.ui.util.VerticalPadding4
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GetUserEmailScreen(
-    viewModel: GetUserEmailViewModel,
+    viewModel: GetUserEmailViewModel = koinViewModel(),
     onContinuePressed: () -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {

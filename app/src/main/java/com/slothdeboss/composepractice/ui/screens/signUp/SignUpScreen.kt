@@ -43,11 +43,12 @@ import com.slothdeboss.composepractice.ui.util.HorizontalPadding8
 import com.slothdeboss.composepractice.ui.util.VerticalPadding16
 import com.slothdeboss.composepractice.ui.util.VerticalPadding24
 import com.slothdeboss.composepractice.ui.util.VerticalPadding8
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel,
+    viewModel: SignUpViewModel = koinViewModel(),
     onLoginClick: () -> Unit = {}
 ) {
 

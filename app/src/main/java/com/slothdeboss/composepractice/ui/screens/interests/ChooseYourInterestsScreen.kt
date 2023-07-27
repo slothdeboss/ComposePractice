@@ -31,11 +31,12 @@ import com.slothdeboss.composepractice.ui.theme.ComposePracticeTheme
 import com.slothdeboss.composepractice.ui.theme.highlightButtonColors
 import com.slothdeboss.composepractice.ui.util.VerticalPadding12
 import com.slothdeboss.composepractice.ui.util.VerticalPadding40
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseYourInterestsScreen(
-    viewModel: ChooseYourInterestsViewModel,
+    viewModel: ChooseYourInterestsViewModel = koinViewModel(),
     onNext: () -> Unit = {}
 ) {
 
